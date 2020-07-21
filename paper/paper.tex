@@ -13,6 +13,12 @@
 \usepackage{url}
 \urlstyle{same}
 
+% Language and hyphenation
+% \usepackage[english]{babel}
+\usepackage[htt]{hyphenat}
+
+% Graphics
+\usepackage{graphicx}
 
 \hypersetup
 {
@@ -112,7 +118,15 @@ For a population $P$ of size $n$ that pursues the population-level aggregate of 
 	\label{eq:sir_strat_equation}
 \end{equation}
 
-The fraction $\frac{\beta n}{\gamma}$ equals the basic reproduction number, $R_0$. For SARS-CoV-2, estimates of $R_0$ range from 1.4 to 6.49, with studies that relied on statistical estimation of $R_0$ ranging from 2.20 to 3.58, with an average of 2.67\cite{liu2020reproductive} 
+\begin{figure}
+	\includegraphics[width=\linewidth]{figures/fig1-odes}
+	\caption{Some quantitative solutions for the SIR model's population dynamics over values of $R_0$ between 1.5 and 6.5, and values of $\gamma$ between $1/4.6$ and $1/12.4$ over a base population of 10,000. For each plot, $\beta$ is inferred from an $R_0$ value of 2.67, based on Liu et al. (2020),\cite{liu2020reproductive} and the $\gamma$ parameter. The susceptible population is displayed in blue, while infected/infectious cases are marked in red and recovered cases in green.}
+	\label{fig:ode_solutions}
+\end{figure}
+
+The fraction $\frac{\beta n}{\gamma}$ equals the basic reproduction number, $R_0$. For SARS-CoV-2, estimates of $R_0$ range from 1.4 to 6.49, with studies that relied on statistical estimation of $R_0$ ranging from 2.20 to 3.58, with an average of 2.67\cite{liu2020reproductive} $\gamma$, on the other hand, can be estimated as the invers of the number of days of illness, which can be approximated as $8.5 \pm 3.9$ days. Figure~\ref{fig:ode_solutions} describes some analytical solutions for the differential equations of Equation~\eqref{eq:sir_equation} over a range of plausible values of $R_0$ and $\gamma$ under the assumption of an $R_0$ of 2.67.
+
+The ODEs of Equation~\eqref{eq:sir_equation} can then be parametrised with the population-level strategy (Equation~\eqref{eq:sir_strat_equation}). 
 
 % section methods (end)
 
