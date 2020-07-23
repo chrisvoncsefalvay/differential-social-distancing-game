@@ -22,11 +22,11 @@
 
 \hypersetup
 {
-  pdftitle   = {A differential game analysis of social distancing in COVID-19},
+  pdftitle   = {Marginal dynamics of social distancing in COVID-19},
   pdfauthor  = {Chris von Csefalvay}
 }
 
-\title{A differential game analysis of social distancing in COVID-19}
+\title{Marginal dynamics of social distancing in COVID-19}
 \author{Chris von Csefalvay}
 
 \begin{document}
@@ -73,6 +73,7 @@ Then, assigning the variable $c_s$ to represent the cost of illness (economic lo
 
 \begin{equation}
 	J_{\sigma_{\lnot \delta}}(p_i, t) = f_r(\bar{\delta}(P), t) c_s - f_c(\bar{\delta}(P), t)
+	\label{eq:risk}
 \end{equation}
 
 \noindent And consequently, it holds for the population level cost $\bar{J}$ at time $t$ that
@@ -115,18 +116,6 @@ Given a population of $n$ under the assumption that reinfection is impossible (a
 	\label{eq:sir_equation}
 \end{equation}
 
-\noindent under the assumption of $S + I + R = 0$, where $S$ represents susceptible individuals, $I$ represents infected/infectious individuals and $R$ accounts for removed individuals (mortality and recovery to immunity). Even in the absence of firm evidence as to whether SARS-CoV-2 infection followed by recovery would engender lifelong immunity or not,\cite{roy2020covid,ota2020will,lin2020duration} it can be assumed in the short term -- based on evidence from MERS-CoV and SARS-CoV -- that in the short term, survivors remain immune,\cite{prompetchara2020immune} and consequently the number of individuals in $R$ does not decrease.
-
-For a population $P$ of size $n$ that pursues the population-level aggregate of strategies described by $\bar{\sigma(P)}$, the dynamics described above in Equation~\eqref{eq:sir_equation} becomes
-
-\begin{equation}
-	\begin{aligned}
-		\frac{dS}{dt} = - \bar{\sigma}(P) \frac{\beta S I}{n} 				\\
-		\frac{dI}{dt} = \bar{\sigma}(P) \frac{\beta S I}{n} - \gamma I 		\\
-		\frac{dR}{dt} = \gamma I
-	\end{aligned}
-	\label{eq:sir_strat_equation}
-\end{equation}
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{figures/fig1-odes}
@@ -134,94 +123,102 @@ For a population $P$ of size $n$ that pursues the population-level aggregate of 
 	\label{fig:ode_solutions}
 \end{figure}
 
-The fraction $\frac{\beta n}{\gamma}$ equals the basic reproduction number, $R_0$. For SARS-CoV-2, estimates of $R_0$ range from 1.4 to 6.49, with studies that relied on statistical estimation of $R_0$ ranging from 2.20 to 3.58, with an average of 2.67\cite{liu2020reproductive} $\gamma$, on the other hand, can be estimated as the invers of the number of days of illness, which can be approximated as $8.5 \pm 3.9$ days.\cite{pan2020clinical,liu2020risk} Figure~\ref{fig:ode_solutions} describes some analytical solutions for the differential equations of Equation~\eqref{eq:sir_equation} over a range of plausible values of $R_0$ and $\gamma$ under the assumption of an $R_0$ of 2.67.
+\noindent under the assumption of $S + I + R = 0$, where $S$ represents susceptible individuals, $I$ represents infected/infectious individuals and $R$ accounts for removed individuals (mortality and recovery to immunity). The fraction $\frac{\beta}{\gamma}$ equals the basic reproduction number, $R_0$. For SARS-CoV-2, estimates of $R_0$ range from 1.4 to 6.49, with studies that relied on statistical estimation of $R_0$ ranging from 2.20 to 3.58, with an average of 2.67\cite{liu2020reproductive} $\gamma$, on the other hand, can be estimated as the invers of the number of days of illness, which can be approximated as $8.5 \pm 3.9$ days.\cite{pan2020clinical,liu2020risk} Figure~\ref{fig:ode_solutions} describes some analytical solutions for the differential equations of Equation~\eqref{eq:sir_equation} over a range of plausible values of $R_0$ and $\gamma$ under the assumption of an $R_0$ of 2.67. Even in the absence of firm evidence as to whether SARS-CoV-2 infection followed by recovery would engender lifelong immunity or not,\cite{roy2020covid,ota2020will,lin2020duration} it can be assumed in the short term -- based on evidence from MERS-CoV and SARS-CoV -- that in the short term, survivors remain immune,\cite{prompetchara2020immune} and consequently the number of individuals in $R$ does not decrease. Numerical solutions to this system of differential equations have been calculated using \texttt{odepack} via \texttt{SciPy 1.5.1}\cite{virtanen2020scipy} on Python 3.6, and are presented as Figure~\ref{fig:ode_solutions} for a range of values of $R_0$ and $\gamma$.
 
 % subsection the_ordinary_differential_equations_of_disease_dynamics (end)
 
 \subsection{Population strategy contingent solutions to population dynamics} % (fold)
 \label{sub:population_strategy_contingent_solutions_to_population_dynamics}
 
-
 \begin{figure}
-	\includegraphics[width=\linewidth]{figures/fig2-strategy_solutions_by_days}
-	\caption{A first naive approximation of population strategy contingent dynamics in a population of 10,000 with an initial seed population of 1\% infected initially, showing the maximum number of infected by 14, 21, 28 and 35 days. For each plot, the $\gamma$ parameter was estimated to be $\frac{1}{8.5}$, based on Pan et al. (2020) and Liu et al. (2020),\cite{pan2020clinical,liu2020risk}. This initial approach assumes a constant effect to social distancing, i.e. not accounting for diminishing returns, whether over time or over population participating in social distancing.}
-	\label{fig:first_naive_solution}
+	\includegraphics[width=\linewidth]{figures/fig3-SIR-by-delta}
+	\caption{Contour diagrams of numeric solutions for susceptible, infectious and removed ($S$, $I$ and $R$) compartment sizes for a base population of 10,000 individuals with a seed population of 1\% infected, under the assumption of an $R_0$ of 2.67 and $\gamma$ of $\frac{1}{8.5}$. As this figure indicates, the 'critical mass' of social distancing takes place in the $\delta$ range of 0 to 0.4, and thus even modest increases in social distancing participation at low levels can make a significant difference in the number of infectious cases.}
+	\label{fig:fig3-SIR-by-delta}
 \end{figure}
 
-Let us now draw on Equation~\eqref{eq:overall_strategy} to adjust the system of differential equations in Equation~\eqref{eq:sir_equation}. A population $P$ adopting the overall strategy $\bar{\sigma}(P, t)$ at time $t$ will have an efficiency factor of $\delta(P, t)$, bounded by $[0; 1]$, where
+Given a population that then adopts a sum strategy $\bar{\sigma}(P, t)$ at time $t$ that results in $\delta(P, t)$ adherence (or in Reluga's terms, investment) to social distancing, the flow from $S$ to $I$ is reduced by a corresponding factor. This allows us to rewrite Equation~\eqref{eq:sir_equation} so that for a society level strategy $\bar{\sigma}$ yielding $\delta$, the populations can be characterised as
 
 \begin{equation}
 	\begin{aligned}
-		\delta(P, t) = \frac{\displaystyle \sum_{i = 1}^n \sigma(p_i, t)}{n}
+		\frac{dS}{dt} = - \frac{\beta S I - \delta \beta S I}{n} 			\\
+		\frac{dI}{dt} = \frac{\beta S I - \delta \beta S I}{n} - \gamma I	\\
+		\frac{dR}{dt} = \gamma I
 	\end{aligned}
-	\label{eq:delta_p_t}
-\end{equation} 
+	\label{eq:sir_with_social_distancing}
+\end{equation}
 
-\noindent in other words, $\delta(P, t)$ is the fraction of the population $P$ that is engaged in social distancing at time $t$. An initial naive approximation of the effect of various values of $\delta(P, t)$ (as a rough proxy of $\bar{\sigma{(P, t)}}$) is represented by Figure~\ref{fig:first_naive_solution}. This does not, however, account for the underlying differential game, i.e. the individual and societal cost of distancing or not distancing. In the following refinement of the model, we will consider each of these in turn.
+Solutions to this system of differential equations have been calculated and are presented in Figure~\ref{fig:fig3-SIR-by-delta}. Importantly, this allows us to identify the marginal utility $\hat{U}(P, t)$ as
+
+\begin{equation}
+	\begin{aligned}
+		\hat{U}(P, t) = \frac{\partial I(P, t)}{\partial \delta(t)}
+	\end{aligned}
+	\label{eq:marginal_utility}
+\end{equation}
+
+\noindent i.e. the partial derivative of $I(P, t)$ over $\delta(P, t)$. Thus, for a population-level strategy $\bar{\sigma}(P, t)$ associated with a compliance rate (i.e. the fraction of persons $p_i \in P$ engaged in social distancing at time $t$) of $\delta(P, t)$, there exists a function $\hat{U}(P, t)$ given $\gamma$ and $R_0$ that indicates the marginal utility at any given value of $\delta(P, t)$. This, too, can be numerically ascertained, and is shown on Figure~\ref{fig:marginal_utility}.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{figures/marginal_utility}
+	\caption{Marginal utility of social distancing in a population $P$ of $\delta(P)$ adherence over time. The marginal utility is defined as the vertical component of the gradient of infected individuals. The plot draws on a base population of 10,000 individuals with a seed population of 1\% infected, under the assumption of an $R_0$ of 2.67 and $\gamma$ of $\frac{1}{8.5}$.}
+	\label{fig:marginal_utility}
+\end{figure}
 
 % subsection population_strategy_contingent_solutions_to_population_dynamics (end)
 
-\subsection{Cost and strategy} % (fold)
-\label{sub:cost_and_strategy}
+\subsection{Cost, risk and strategy} % (fold)
+\label{sub:cost_risk_and_strategy}
 
-For each member $p$ of the population $P$, there exists a cost function of distancing $J_{\delta}(P, t)$ for any given time $t$ contingent on the population $P$'s behaviour, and a corresponding function $J_{\lnot \delta}(P, t)$ for not distancing (see Equation~\eqref{eq:cost_eqn}). As noted above, three major factors govern the cost for each individual: the cost of distancing per unit time ($c_d$, comprising economic and non-economic costs of social distancing), the risk of contracting the disease ($f_r(\bar{\delta}(P), t)$) and the cost of sickness per unit time spent sick ($c_s$). The cost is decreased by the social benefit of distancing, which is, at least outside trivially sized populations, largely independent from the individual and depends on how many in the population are engaging in social distancing ($f_c(\bar{\delta}(P), t)$).
-
-For a population of rational actors, it can be assumed that they will adopt the strategy that is the most beneficial given the information they have. It deserves mention that, as Reluga (2006) alludes to, decisions are made by players based on the information they have,\cite{reluga2006evolving} which may often be incomplete or even outright false: perceptions, not necessarily reality, drive decision-making. Ignoring the social benefit, the equilibrium point between strategies, $J_{\delta}(P, t) = J_{\lnot \delta}(P, t)$ is reached for the equilibrium condition where
+Any strategy $\sigma$ has a cost $J(\sigma)$, as stated in Section~\ref{sec:introduction}, and the overall societal cost of $n$ individuals $p_{1 \ldots n} \in P$ each adopting, respectively, strategy $\sigma_{1 \ldots n}$, is $\sum_{i=0}^n J(\sigma_i)$. But since strategies are limited (one may, at any given time, either engage in social distancing or not, assuming for simplicity's sake that those who do so are entirely successful), for any society-level strategy $\bar{\sigma} (t)$ resulting in a level of distancing described by $\delta (t)$, 
 
 \begin{equation}
-	c_d = f_r(\bar{\delta}(P), t) c_s
-	\label{eq:cost_risk}
+	\begin{aligned}
+		\bar{J}(P, t) = \sum_{i=0}^{\delta(P, t) n} J_{\delta} + \sum_{j=0}^{(1-\delta(P, t)) n} J_{\lnot \delta}
+	\end{aligned}
+	\label{eq:j_bar}
 \end{equation}
 
-\noindent -- or in other words, where the cost of distancing equals the risk of contracting the disease (given the population's state) and the cost of the disease. This point also represents a subgame perfect Nash equilibrium for the underlying differential game. This is easy to see: given this equilibrium point, a person who is not socially distancing may switch to the strategy of social distancing, but would incur an unwarranted cost. Similarly, a person who is socially distancing at this time would risk more than the costs avoided by forgoing social distancing. 
+\noindent where $J_{\delta}$ is the cost of social distancing for discrete unit time and $J_{\lnot \delta}$ is the cost of not distancing for the same unit time. The latter of these is not constant, as Equation~\eqref{eq:risk} shows, but a function of a constant cost of infection, $c_i$, and the risk of infection ($r_i$), which is contingent on $I(t)$ and $\delta(t)$. Thus, Equation~\eqref{eq:j_bar} can be reformulated (once again, in discrete time) as
+
+\begin{equation}
+	\begin{aligned}
+		\bar{J}(P, t) = \delta(t) n c_d + (1 - \delta(t)) n J_{\lnot \delta}
+	\end{aligned}
+\end{equation}
+
+\noindent which expands to
+
+\begin{equation}
+	\begin{aligned}
+		\bar{J}(P, t) = \delta(t) n c_d + (1 - \delta(t)) n r_i(t) c_i
+	\end{aligned}
+\end{equation}
+
+For a susceptible individual $p_i \in S$, the risk of infection $r_i(t)$ in discrete time is the proportional likelihood of infection, or in other words, 
+
+\begin{equation}
+	\begin{aligned}
+		r_i(t) = \frac{\beta S(t) I(t)}{n^2}
+	\end{aligned}
+\end{equation}
+
+While quantification of costs of illness is difficult, quantification of the economic, social and emotional costs of social distancing is even harder to grasp. However, we may, for a range of cost fractions $\frac{c_d}{c_i}$, estimate values of $\delta(t)$ that denote optimal strategic spaces. Thus, 
+
+\begin{equation}
+	\begin{aligned}
+		\frac{c_d}{c_i}(P, t) = \frac{(1 - \delta(t)) R_0 \gamma S(t) I(t)}{\delta(t) n^2}
+	\end{aligned}
+\end{equation}
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{figures/fig3-risk-of-adherence}
-	\caption{Relative benefits of social distancing as a function of $R_0$ and societal adherence for a population of 10,000 with an initial infected seed population of 1\%. Benefits are normalised to 1.0 against the maximum value. For each plot, the $\gamma$ parameter was estimated to be $\frac{1}{8.5}$, based on Pan et al. (2020) and Liu et al. (2020),\cite{pan2020clinical,liu2020risk}. As the plot indicates, social distancing is most effective for higher $R_0$ and mediocre overall social distancing within the population, contradicting the widely shared popular perception that social distancing is useless unless practised by an overwhelming majority and supporting the case for social distancing for all individuals.}
-	\label{fig:risk_and_compliance}
+	\includegraphics[width=\linewidth]{figures/cost_fraction}
+	\caption{Cost fraction $\frac{c_d}{c_i}$ of social distancing in a population $P$ of $\delta(P)$ adherence over time, based on a population of 10,000 individuals with a seed population of 1\% infected, under the assumption of an $R_0$ of 2.67 and $\gamma$ of $\frac{1}{8.5}$. The contour lines indicate the cost fraction, i.e. what fraction of the cost of social distancing $c_d$ the cost of illness $c_i$ must be in order to make not distancing a preferred strategy.}
+	\label{fig:cost_fraction}
 \end{figure}
 
+As numerical estimation of this cost fraction (Figure~\ref{fig:cost_fraction}) shows that for most cases, not distancing can only be a feasible strategy if the cost of distancing very significantly outweighs the cost of illness, often by as much as four orders of magnitude. Since this is notwithstanding risk (i.e. the comparison needs to be made between the absolute cost of infection and the absolute cost of distancing, rather than the probability/risk-adjusted figures).
 
-It is clear that the risk of disease at time $t$, $f_r(\bar{\delta}(P), t)$, is in fact reflective of the adjusted force of infection subject to the share of the population engaged in social distancing, described by $\bar{\delta}(P)$. The force of infection $\lambda$ is typically defined as $\frac{\beta I}{n}$. When adjusting for the risk of disease to an individual considering the population's response, encapsulated in $\bar{\delta}(P)$, we get
-
-\begin{equation}
-	f_r(\bar{\delta}(P), t) = \frac{\bar{\delta}(P) \beta I(t)}{n}
-	\label{eq:adjusted_force_of_infection}
-\end{equation}
-
-\noindent and substituting $R_0 = \frac{\beta n}{\gamma}$ into Equation~\eqref{eq:adjusted_force_of_infection} allows us to express this as 
-
-\begin{equation}
-	f_r(\bar{\delta}(P), t) = \frac{\bar{\delta}(P) R_0 \gamma I(t)}{n^2}
-	\label{eq:expanded_cost_fx}
-\end{equation}
-
-This can be solved using quantitative methods (see Figure~\ref{fig:risk_and_compliance}) to yield isorisk curves based on $R_0$ and $\delta(P)$, i.e. on pathogen-intrinsic and population-intrinsic characteristics, over time.
-
-% subsection cost_and_strategy (end)
-
-\subsection{Cost-risk equilibria} % (fold)
-\label{sub:cost_risk_equilibria}
-
-As noted in Equation~\eqref{eq:cost_risk}, on a social level, the equilibrium state is defined where the cost of disease times the risk of disease equals the cost of avoidance. By substituting Equation~\eqref{eq:expanded_cost_fx} into Equation~\eqref{eq:cost_risk}, we get the equilibrium equation
-
-\begin{equation}
-	c_d(t) = c_s(t) \frac{\bar{\delta}(P(t)) R_0 \gamma I(t)}{n^2}
-\end{equation}
-
-\noindent or, reformulated, 
-
-\begin{equation}
-	\frac{c_d(t)}{c_s(t)} = \frac{\bar{\delta}(P(t)) R_0 \gamma I(t)}{n^2}
-\end{equation}
-
-Expressed over the entire duration $t_{0 \ldots e}$, the cost ratio of distancing ($c_d$) and sickness ($c_s$) is
-
-\begin{equation}
-	\frac{c_d}{c_t} = \int_{t_0}^{t_e} \frac{\bar{\delta}(P(t)) R_0 \gamma I(t)}{n^2} dt
-\end{equation}
-
-% subsection cost_risk_equilibria (end)
+% subsection cost_risk_and_strategy (end)
 
 % section methods (end)
 
