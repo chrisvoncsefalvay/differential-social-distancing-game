@@ -1,6 +1,6 @@
 # Statistical dynamics of social distancing in SARS-CoV-2 as a differential game
 
-This repository holds the manuscript, as well as the notebook containing calculations and producing the plots, from the paper _Statistical dynamics of social distancing in SARS-CoV-2 as a differential game_ by Chris von Csefalvay.
+This repository holds the manuscript, as well as the notebook containing calculations and producing the plots, from the paper [_Statistical dynamics of social distancing in SARS-CoV-2 as a differential game_](https://arxiv.org/abs/2007.13734) by Chris von Csefalvay.
 
 ## Notebooks
 
